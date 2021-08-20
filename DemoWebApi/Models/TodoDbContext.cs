@@ -11,11 +11,6 @@ namespace DemoWebApi.Models
 		protected override void OnConfiguring(DbContextOptionsBuilder options)
 				=> options.UseSqlServer("Server=.;Database=TodoDB;Trusted_Connection=True");
 
-		//public TodoDbContext(DbContextOptions<TodoDbContext> options) : base(options)
-		//{
-			
-		//}
-
-		public DbSet<TodoItem> ToDoItems { get; set; }
+		public DbSet<TodoItem> ToDoItem { get; set; }
 	}
 }

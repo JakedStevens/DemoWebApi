@@ -9,7 +9,7 @@ using DemoWebApi.Models;
 
 namespace DemoWebApi.Controllers
 {
-    [Route("api/TodoItems")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TodoItemsController : ControllerBase
     {
@@ -21,23 +21,17 @@ namespace DemoWebApi.Controllers
         }
 
         // GET: api/TodoItems
-        //[HttpGet]
-        //public async Task<ActionResult<IEnumerable<TodoItem>>> GetToDoItems()
-        //{
-        //    return await _context.ToDoItems.ToListAsync();
-        //}
-
-        public async Task<ActionResult> GetToDoItems()
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<TodoItem>>> GetToDoItem()
         {
-            List<TodoItem> items = await _context.ToDoItems.ToListAsync();
-            return Json(comments);
+            return await _context.ToDoItem.ToListAsync();
         }
 
         // GET: api/TodoItems/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<TodoItem>> GetTodoItem(long id)
+        public async Task<ActionResult<TodoItem>> GetTodoItem(int id)
         {
-            var todoItem = await _context.ToDoItems.FindAsync(id);
+            var todoItem = await _context.ToDoItem.FindAsync(id);
 
             if (todoItem == null)
             {
@@ -50,7 +44,7 @@ namespace DemoWebApi.Controllers
         // PUT: api/TodoItems/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutTodoItem(long id, TodoItem todoItem)
+        public async Task<IActionResult> PutTodoItem(int id, TodoItem todoItem)
         {
             if (id != todoItem.Id)
             {
@@ -83,32 +77,31 @@ namespace DemoWebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
         {
-            _context.ToDoItems.Add(todoItem);
+            _context.ToDoItem.Add(todoItem);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
-            return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
+            return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
         }
 
         // DELETE: api/TodoItems/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(long id)
+        public async Task<IActionResult> DeleteTodoItem(int id)
         {
-            var todoItem = await _context.ToDoItems.FindAsync(id);
+            var todoItem = await _context.ToDoItem.FindAsync(id);
             if (todoItem == null)
             {
                 return NotFound();
             }
 
-            _context.ToDoItems.Remove(todoItem);
+            _context.ToDoItem.Remove(todoItem);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool TodoItemExists(long id)
+        private bool TodoItemExists(int id)
         {
-            return _context.ToDoItems.Any(e => e.Id == id);
+            return _context.ToDoItem.Any(e => e.Id == id);
         }
     }
 }
